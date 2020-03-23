@@ -30,7 +30,7 @@ class SyslogLogger extends AbstractLoggerRoute
     {
         if ($this->isHandling($level)) {
             $datetime = new DateTime();
-            $formattedMessage = sprintf("%s  %s  %03d  %s\n", $datetime->format(DateTime::ATOM), self::$levelsPrinted[$level], $level, $message);
+            $formattedMessage = sprintf("%s  %s  %03d  %s", $datetime->format(DateTime::ATOM), self::$levelsPrinted[$level], $level, $message);
             syslog(self::$syslogLevelsMapped[$level], $formattedMessage);
         }
     }
