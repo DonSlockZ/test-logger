@@ -19,11 +19,16 @@ class SyslogLogger extends AbstractLoggerRoute
         LogLevel::LEVEL_DEBUG     => 'DEBUG',
         LogLevel::LEVEL_NOTICE    => 'NOTICE',
     ];
+
+    public function __construct(array $options = null)
+    {
+        parent::__construct($options);
+        openlog("phpLogger", LOG_PID | LOG_PERROR, LOG_LOCAL0);
+    }
     
     public function log(int $level, string $message)
     {
         if ($this->isHandling($level)) {
-            openlog("phpLogger", LOG_PID | LOG_PERROR, LOG_LOCAL0);
             $datetime = new DateTime();
             $formattedMessage = sprintf("%s  %s  %03d  %s\n", $datetime->format(DateTime::ATOM), self::$levelsPrinted[$level], $level, $message);
             syslog(self::$syslogLevelsMapped[$level], $formattedMessage);
